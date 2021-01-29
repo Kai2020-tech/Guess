@@ -46,7 +46,7 @@ class MaterialActivity : AppCompatActivity() {
 
         })
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener {
             replay()
         }
     }

@@ -4,11 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 
+
 class GuessViewModel : ViewModel() {
     var secret = 0
     var count = 0
     val counter = MutableLiveData<Int>()
-    val result = MutableLiveData<GameResult>()
+    val result = SingleLiveEvent<GameResult>()
 
     init {
         counter.value = count
