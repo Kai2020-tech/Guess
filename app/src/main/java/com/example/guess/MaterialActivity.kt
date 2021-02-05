@@ -1,17 +1,17 @@
 package com.example.guess
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.guess.databinding.ActivityMainBinding
 import com.example.guess.databinding.ActivityMaterialBinding
 import com.example.guess.databinding.ContentMaterialBinding
+
+const val REQUEST_CODE: Int = 100
 
 class MaterialActivity : AppCompatActivity() {
     private lateinit var viewModel: GuessViewModel
@@ -41,6 +41,14 @@ class MaterialActivity : AppCompatActivity() {
                 .setMessage(message)
                 .setPositiveButton(getString(R.string.ok)) { _, _ ->
                     contentBinding.edNumber.text.clear()
+                    if (message == getString(R.string.you_got_it)) {
+                        val intent = Intent(this, RecordActivity::class.java)
+                        intent.putExtra("count", viewModel.count)
+                        intent.putExtra("answer", viewModel.secret)
+//                        startActivity(intent)
+                        startActivityForResult(intent, REQUEST_CODE)
+                    }
+
                 }
                 .show()
 
@@ -49,6 +57,18 @@ class MaterialActivity : AppCompatActivity() {
         binding.fab.setOnClickListener {
             replay()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == REQUEST_CODE) {
+            if(resultCode == RESULT_OK) {
+                /**do something*/
+                replay()
+            }else if(resultCode == 222){
+                Toast.makeText(this, data?.getStringExtra("message"), Toast.LENGTH_SHORT).show()
+            }
+//        }
     }
 
     fun check(view: View) {
